@@ -4,7 +4,7 @@ import {
 } from 'react-navigation';
 import {
   AuthScreen, DeckScreen, MapScreen, ReviewScreen, WelcomeScreen, SettingsScreen,
-} from './screens';
+} from './src/screens';
 
 const MainNavigator = createBottomTabNavigator({
   welcome: WelcomeScreen,
