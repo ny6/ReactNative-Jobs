@@ -1,30 +1,12 @@
 import React from 'react';
-import {
-  createBottomTabNavigator, createStackNavigator, createAppContainer,
-} from 'react-navigation';
-import {
-  AuthScreen, DeckScreen, MapScreen, ReviewScreen, WelcomeScreen, SettingsScreen,
-} from './src/screens';
+import { Provider } from 'react-redux';
+import store from './src/store';
+import RootContainer from './src/routes';
 
-const MainNavigator = createBottomTabNavigator({
-  welcome: WelcomeScreen,
-  auth: AuthScreen,
-  main: {
-    screen: createBottomTabNavigator({
-      map: MapScreen,
-      deck: DeckScreen,
-      review: {
-        screen: createStackNavigator({
-          review: ReviewScreen,
-          settings: SettingsScreen,
-        }),
-      },
-    }),
-  },
-});
-
-const RootContainer = createAppContainer(MainNavigator);
-
-const App = () => <RootContainer />;
+const App = () => (
+  <Provider store={store}>
+    <RootContainer />
+  </Provider>
+);
 
 export default App;
