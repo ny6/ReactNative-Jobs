@@ -15,6 +15,7 @@ const MainNavigator = createBottomTabNavigator({
     navigationOptions: { tabBarVisible: false },
   },
   main: {
+    navigationOptions: { tabBarVisible: false },
     screen: createBottomTabNavigator({
       map: MapScreen,
       deck: DeckScreen,

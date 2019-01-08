@@ -1,7 +1,16 @@
 import { Facebook } from 'expo';
 import { AsyncStorage } from 'react-native';
-import { FB_LOGIN_SUCCESS, FB_LOGIN_FAIL, FB_LOGOUT } from './types';
 import { FB_TOKEN } from './tokens';
+import {
+  FB_LOGIN_SUCCESS, FB_LOGIN_FAIL, FB_LOGOUT, LOGIN_STATUS,
+} from './types';
+
+export const loggedInStatus = () => async (dispatch) => {
+  try {
+    const tokenExists = await AsyncStorage.getItem(FB_TOKEN);
+    return dispatch({ type: LOGIN_STATUS, payload: !!tokenExists });
+  } catch (err) { return dispatch({ type: LOGIN_STATUS, payload: null }); }
+};
 
 export const fbLogin = () => async (dispatch) => {
   try {

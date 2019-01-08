@@ -1,28 +1,42 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fbLogin } from '../actions';
 
 class AuthScreen extends Component {
-  componentDidMount() {
+  async componentDidMount() {
     const { startAuth } = this.props;
-    startAuth();
+    await startAuth();
+    this.onAuthComplete();
+  }
+
+  componentDidUpdate() {
+    this.onAuthComplete();
+  }
+
+  onAuthComplete = () => {
+    const { token, navigation } = this.props;
+    if (token) navigation.navigate('main');
   }
 
   render() {
-    return (
-      <View><Text>Auth Screen</Text></View>
-    );
+    return <View />;
   }
 }
 
+AuthScreen.defaultProps = {
+  token: null,
+};
 AuthScreen.propTypes = {
+  navigation: PropTypes.shape({}).isRequired,
   startAuth: PropTypes.func.isRequired,
+  token: PropTypes.string,
 };
 
+const mapStateToProps = ({ auth: { token } }) => ({ token });
 const mapDispatchToProps = dispatch => ({
   startAuth: () => dispatch(fbLogin()),
 });
 
-export default connect(null, mapDispatchToProps)(AuthScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);
