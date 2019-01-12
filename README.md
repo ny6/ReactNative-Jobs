@@ -1,2 +1,3 @@
 # ReactNative-Jobs
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f99a92f502584d11b585a97e4c8bdf08)](https://app.codacy.com/app/theyeshu/ReactNative-Jobs?utm_source=github.com&utm_medium=referral&utm_content=theyeshu/ReactNative-Jobs&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f99a92f502584d11b585a97e4c8bdf08)](https://app.codacy.com/app/theyeshu/ReactNative-Jobs?utm_source=github.com&utm_medium=referral&utm_content=theyeshu/ReactNative-Jobs&utm_campaign=Badge_Grade_Dashboard)
