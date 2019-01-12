@@ -25,7 +25,10 @@ class ReviewScreen extends Component {
     return (
       <ScrollView>
         {likedJobs.map(job => (
-          <Card key={job.id}>
+          <Card
+            key={job.id}
+            title={job.title}
+          >
             <View style={{ height: 200 }}>
               <MapView
                 style={[{ flex: 1 }, mb10]}

@@ -9,7 +9,7 @@ import { Card } from 'react-native-elements';
 import striptags from 'striptags';
 import Swipe from '../components/Swipe';
 import latlngData from '../lat_lng_data';
-import { likeJob } from '../actions/job';
+import { likeJob, clearListedJobs } from '../actions';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -30,7 +30,7 @@ export const getLatLng = () => {
   return region;
 };
 
-const DeckScreen = ({ listing, like }) => {
+const DeckScreen = ({ listing, like, clearJobs }) => {
   const renderText = (header, text = 'NA') => (
     <Text style={mb10}>
       <Text style={textBold}>{header}</Text>
@@ -55,9 +55,12 @@ const DeckScreen = ({ listing, like }) => {
     </Card>
   );
 
-  const renderNoMoreCards = () => (
-    <Card title="No more jobs!" />
-  );
+  const renderNoMoreCards = () => {
+    clearJobs();
+    return (
+      <Card title="No more jobs here! Try some other area" />
+    );
+  };
 
   return (
     <View style={{ marginTop: 10 }}>
@@ -71,14 +74,19 @@ const DeckScreen = ({ listing, like }) => {
   );
 };
 
+DeckScreen.defaultProps = {
+  listing: [],
+};
 DeckScreen.propTypes = {
-  listing: PropTypes.instanceOf(Array).isRequired,
+  listing: PropTypes.instanceOf(Array),
   like: PropTypes.func.isRequired,
+  clearJobs: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ job: { listing } }) => ({ listing });
 const mapDispatchToProps = dispatch => ({
   like: job => dispatch(likeJob(job)),
+  clearJobs: () => dispatch(clearListedJobs()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeckScreen);

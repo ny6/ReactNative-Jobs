@@ -1,7 +1,9 @@
 import axios from 'axios';
 import qs from 'qs';
 import { Location } from 'expo';
-import { FETCH_JOBS, LIKE_JOB } from './types';
+import {
+  FETCH_JOBS, LIKE_JOB, CLEAR_LIKED_JOB, CLEAR_LISTED_JOB,
+} from './types';
 
 const createBaseUrl = (l) => {
   const baseUrl = 'https://authenticjobs.com/api/?';
@@ -34,4 +36,12 @@ export const fetchJobs = (region, cb) => async (dispatch) => {
 
 export const likeJob = job => dispatch => dispatch({
   type: LIKE_JOB, payload: job,
+});
+
+export const clearLikedJobs = () => dispatch => dispatch({
+  type: CLEAR_LIKED_JOB,
+});
+
+export const clearListedJobs = () => dispatch => dispatch({
+  type: CLEAR_LISTED_JOB,
 });
