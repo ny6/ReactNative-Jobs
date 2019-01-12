@@ -88,7 +88,9 @@ class Swipe extends Component {
   }
 
   renderCards = () => {
-    const { data, renderCard, renderNoMoreCards } = this.props;
+    const {
+      data, renderCard, renderNoMoreCards, keyProp,
+    } = this.props;
     const { index } = this.state;
     const { cardStyle } = styles;
 
@@ -98,7 +100,7 @@ class Swipe extends Component {
       if (i === index) {
         return (
           <Animated.View
-            key={x.id}
+            key={x[keyProp]}
             style={[this.getCardStyle(), cardStyle]}
             {...this.panResponder.panHandlers}
           >
@@ -110,7 +112,7 @@ class Swipe extends Component {
       if (i < index) return null;
 
       return (
-        <Animated.View key={x.id} style={[cardStyle, { top: i }]}>
+        <Animated.View key={x[keyProp]} style={[cardStyle, { top: i }]}>
           {renderCard(x)}
         </Animated.View>
       );
@@ -126,9 +128,11 @@ class Swipe extends Component {
 Swipe.defaultProps = {
   onSwipeLeft: f => f,
   onSwipeRight: f => f,
+  keyProp: 'id',
 };
 Swipe.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
+  keyProp: PropTypes.string,
   renderCard: PropTypes.func.isRequired,
   onSwipeLeft: PropTypes.func,
   onSwipeRight: PropTypes.func,
