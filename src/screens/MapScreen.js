@@ -32,7 +32,7 @@ class MapScreen extends Component {
 
   render() {
     const { buttonContainer } = styles;
-    const { fetchData } = this.props;
+    const { fetchData, navigation } = this.props;
     const { mapLoaded, region: reg } = this.state;
     if (!mapLoaded) return <View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator /></View>;
 
@@ -48,7 +48,7 @@ class MapScreen extends Component {
             title="Search This Area"
             backgroundColor="#009688"
             icon={{ name: 'search' }}
-            onPress={() => fetchData(reg)}
+            onPress={() => fetchData(reg, () => navigation.navigate('deck'))}
             large
           />
         </View>
@@ -59,10 +59,11 @@ class MapScreen extends Component {
 
 MapScreen.propTypes = {
   fetchData: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({}).isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-  fetchData: region => dispatch(fetchJobs(region)),
+  fetchData: (region, cb) => dispatch(fetchJobs(region, cb)),
 });
 
 export default connect(null, mapDispatchToProps)(MapScreen);

@@ -15,20 +15,19 @@ const createBaseUrl = (l) => {
   return url;
 };
 
-export const fetchJobs = region => async (dispatch) => { // eslint-disable-line
+export const fetchJobs = (region, cb) => async (dispatch) => { // eslint-disable-line
   try {
-    const address = await Location.reverseGeocodeAsync({
-      longitude: -122,
-      latitude: 37,
-      longitudeDelta: 0.04,
-      latitudeDelta: 0.09,
-    });
+    const address = await Location.reverseGeocodeAsync(region);
     const zip = address[0].postalCode;
     const url = createBaseUrl(zip);
 
     const { data } = await axios.get(url);
-    if (!data) throw new Error('Something went wrong!');
-
-    return dispatch({ type: FETCH_JOBS, payload: data });
+    const error = new Error('Something went wrong!');
+    if (!data) throw error;
+    const { listings, stat } = data;
+    if (!listings || stat !== 'ok') throw error;
+    if (!listings.listing || listings.listing.length <= 0) throw new Error('No jobs found for this area!');
+    dispatch({ type: FETCH_JOBS, payload: listings });
+    return cb();
   } catch (err) { return err; }
 };
