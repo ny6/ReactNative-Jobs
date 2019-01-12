@@ -22,9 +22,11 @@ const styles = {
 
 const DeckScreen = ({ listing }) => {
   const getLatLng = () => {
-    const i = Math.floor(Math.random() * 10) + 1;
+    const i = Math.floor(Math.random() * 9) + 1;
     const deltas = { latitudeDelta: 0.045, longitudeDelta: 0.02 };
-    return { ...latlngData[i], ...deltas };
+    const region = { ...latlngData[i], ...deltas };
+    console.log(region);
+    return region;
   };
 
   const renderCard = job => (

@@ -4,6 +4,7 @@ import {
   LayoutAnimation, UIManager,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { Platform } from 'expo-core';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -93,7 +94,7 @@ class Swipe extends Component {
 
     if (index >= data.length) return renderNoMoreCards();
 
-    return data.map((x, i) => {
+    const deck = data.map((x, i) => {
       if (i === index) {
         return (
           <Animated.View
@@ -113,7 +114,8 @@ class Swipe extends Component {
           {renderCard(x)}
         </Animated.View>
       );
-    }).reverse();
+    });
+    return Platform.OS === 'android' ? deck : deck.reverse();
   }
 
   render() {

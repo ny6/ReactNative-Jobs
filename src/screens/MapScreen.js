@@ -17,6 +17,7 @@ const styles = {
 
 class MapScreen extends Component {
   state = {
+    isLoading: false,
     mapLoaded: false,
     region: {
       longitude: -122,
@@ -30,10 +31,22 @@ class MapScreen extends Component {
     this.setState({ mapLoaded: true });
   }
 
+  cbFunc = () => {
+    const { navigation } = this.props;
+    this.setState({ isLoading: false });
+    navigation.navigate('deck');
+  }
+
+  onPressFunc = () => {
+    const { region: reg } = this.state;
+    const { fetchData } = this.props;
+    this.setState({ isLoading: true });
+    fetchData(reg, this.cbFunc);
+  }
+
   render() {
     const { buttonContainer } = styles;
-    const { fetchData, navigation } = this.props;
-    const { mapLoaded, region: reg } = this.state;
+    const { isLoading, mapLoaded, region: reg } = this.state;
     if (!mapLoaded) return <View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator /></View>;
 
     return (
@@ -45,11 +58,12 @@ class MapScreen extends Component {
         />
         <View style={buttonContainer}>
           <Button
-            title="Search This Area"
+            title={isLoading ? '' : 'Search This Area'}
             backgroundColor="#009688"
-            icon={{ name: 'search' }}
-            onPress={() => fetchData(reg, () => navigation.navigate('deck'))}
+            icon={isLoading ? {} : { name: 'search' }}
+            onPress={this.onPressFunc}
             large
+            loading={isLoading}
           />
         </View>
       </View>
