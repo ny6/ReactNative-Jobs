@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import { Location } from 'expo';
-import { FETCH_JOBS } from './types';
+import { FETCH_JOBS, LIKE_JOB } from './types';
 
 const createBaseUrl = (l) => {
   const baseUrl = 'https://authenticjobs.com/api/?';
@@ -15,7 +15,7 @@ const createBaseUrl = (l) => {
   return url;
 };
 
-export const fetchJobs = (region, cb) => async (dispatch) => { // eslint-disable-line
+export const fetchJobs = (region, cb) => async (dispatch) => {
   try {
     const address = await Location.reverseGeocodeAsync(region);
     const zip = address[0].postalCode;
@@ -31,3 +31,7 @@ export const fetchJobs = (region, cb) => async (dispatch) => { // eslint-disable
     return cb();
   } catch (err) { return err; }
 };
+
+export const likeJob = job => dispatch => dispatch({
+  type: LIKE_JOB, payload: job,
+});

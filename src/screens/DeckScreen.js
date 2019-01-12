@@ -9,6 +9,7 @@ import { Card } from 'react-native-elements';
 import striptags from 'striptags';
 import Swipe from '../components/Swipe';
 import latlngData from '../lat_lng_data';
+import { likeJob } from '../actions/job';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -21,16 +22,15 @@ const styles = {
   },
 };
 
-const { mb10, textBold } = styles;
+export const { mb10, textBold } = styles;
+export const getLatLng = () => {
+  const i = Math.floor(Math.random() * 9) + 1;
+  const deltas = { latitudeDelta: 0.045, longitudeDelta: 0.02 };
+  const region = { ...latlngData[i], ...deltas };
+  return region;
+};
 
-const DeckScreen = ({ listing }) => {
-  const getLatLng = () => {
-    const i = Math.floor(Math.random() * 9) + 1;
-    const deltas = { latitudeDelta: 0.045, longitudeDelta: 0.02 };
-    const region = { ...latlngData[i], ...deltas };
-    return region;
-  };
-
+const DeckScreen = ({ listing, like }) => {
   const renderText = (header, text = 'NA') => (
     <Text style={mb10}>
       <Text style={textBold}>{header}</Text>
@@ -65,6 +65,7 @@ const DeckScreen = ({ listing }) => {
         data={listing}
         renderCard={renderCard}
         renderNoMoreCards={renderNoMoreCards}
+        onSwipeRight={job => like(job)}
       />
     </View>
   );
@@ -72,8 +73,12 @@ const DeckScreen = ({ listing }) => {
 
 DeckScreen.propTypes = {
   listing: PropTypes.instanceOf(Array).isRequired,
+  like: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ job: { listing } }) => ({ listing });
+const mapDispatchToProps = dispatch => ({
+  like: job => dispatch(likeJob(job)),
+});
 
-export default connect(mapStateToProps)(DeckScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DeckScreen);
