@@ -2,7 +2,8 @@ import { Facebook } from 'expo';
 import { AsyncStorage } from 'react-native';
 import { FB_TOKEN } from './tokens';
 import {
-  FB_LOGIN_SUCCESS, FB_LOGIN_FAIL, FB_LOGOUT, LOGIN_STATUS,
+  FB_LOGIN_SUCCESS, FB_LOGIN_FAIL, FB_LOGOUT,
+  LOGIN_STATUS, CLEAR_LIKED_JOB,
 } from './types';
 
 export const loggedInStatus = () => async (dispatch) => {
@@ -31,5 +32,6 @@ export const fbLogin = () => async (dispatch) => {
 export const fbLogout = navigation => async (dispatch) => {
   await AsyncStorage.removeItem(FB_TOKEN);
   dispatch({ type: FB_LOGOUT });
+  dispatch({ type: CLEAR_LIKED_JOB });
   return navigation.navigate('welcome');
 };

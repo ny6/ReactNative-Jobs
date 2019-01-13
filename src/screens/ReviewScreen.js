@@ -62,6 +62,6 @@ ReviewScreen.propTypes = {
   likedJobs: PropTypes.instanceOf(Array),
 };
 
-const mapStateToProps = ({ job: { likedJobs } }) => ({ likedJobs });
+const mapStateToProps = ({ likedJobs }) => ({ likedJobs });
 
 export default connect(mapStateToProps)(ReviewScreen);
