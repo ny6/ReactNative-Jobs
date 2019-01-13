@@ -18,6 +18,9 @@ class ReviewScreen extends Component {
         color="rgba(0, 122, 255, 1)"
       />
     ),
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name="my-location" size={25} color={tintColor} />
+    ),
   })
 
   render() {

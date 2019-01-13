@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   View, Text, Dimensions, Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MapView } from 'expo';
-import { Card } from 'react-native-elements';
+import { Card, Button, Icon } from 'react-native-elements';
 import striptags from 'striptags';
 import Swipe from '../components/Swipe';
 import latlngData from '../lat_lng_data';
@@ -30,8 +30,15 @@ export const getLatLng = () => {
   return region;
 };
 
-const DeckScreen = ({ listing, like, clearJobs }) => {
-  const renderText = (header, text = 'NA') => (
+class DeckScreen extends Component {
+  static navigationOptions = {
+    title: 'Jobs',
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name="description" size={25} color={tintColor} />
+    ),
+  }
+
+  renderText = (header, text = 'NA') => (
     <Text style={mb10}>
       <Text style={textBold}>{header}</Text>
       &nbsp;
@@ -39,7 +46,7 @@ const DeckScreen = ({ listing, like, clearJobs }) => {
     </Text>
   );
 
-  const renderCard = job => (
+  renderCard = job => (
     <Card title={job.title}>
       <View style={[{ height: SCREEN_HEIGHT * 0.3 }, mb10]}>
         <MapView
@@ -49,30 +56,42 @@ const DeckScreen = ({ listing, like, clearJobs }) => {
           initialRegion={getLatLng()}
         />
       </View>
-      {renderText('Company Name:', job.company.name)}
-      {renderText('Job Post Time:', job.post_date)}
-      {renderText('Description:', striptags(job.description).slice(0, 200))}
+      {this.renderText('Company Name:', job.company.name)}
+      {this.renderText('Job Post Time:', job.post_date)}
+      {this.renderText('Description:', striptags(job.description).slice(0, 200))}
     </Card>
   );
 
-  const renderNoMoreCards = () => {
+  renderNoMoreCards = () => {
+    const { clearJobs, navigation } = this.props;
     clearJobs();
     return (
-      <Card title="No more jobs here! Try some other area" />
+      <Card title="No more jobs here!">
+        <Button
+          title="Back To Map"
+          icon={{ name: 'my-location' }}
+          backgroundColor="#03A9F4"
+          onPress={() => navigation.navigate('map')}
+        />
+      </Card>
     );
   };
 
-  return (
-    <View style={{ marginTop: 10 }}>
-      <Swipe
-        data={listing}
-        renderCard={renderCard}
-        renderNoMoreCards={renderNoMoreCards}
-        onSwipeRight={job => like(job)}
-      />
-    </View>
-  );
-};
+  render() {
+    const { listing, like } = this.props;
+
+    return (
+      <View style={{ marginTop: 10 }}>
+        <Swipe
+          data={listing}
+          renderCard={this.renderCard}
+          renderNoMoreCards={this.renderNoMoreCards}
+          onSwipeRight={job => like(job)}
+        />
+      </View>
+    );
+  }
+}
 
 DeckScreen.defaultProps = {
   listing: [],
@@ -81,6 +100,7 @@ DeckScreen.propTypes = {
   listing: PropTypes.instanceOf(Array),
   like: PropTypes.func.isRequired,
   clearJobs: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = ({ job: { listing } }) => ({ listing });
